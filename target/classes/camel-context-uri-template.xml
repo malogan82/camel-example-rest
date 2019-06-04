@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:camel="http://camel.apache.org/schema/spring"
+    xmlns:prop="http://camel.apache.org/schema/placeholder"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans                  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd                 http://camel.apache.org/schema/spring                  http://camel.apache.org/schema/spring/camel-spring.xsd">
+    <camelContext id="camel-context-jaxb" xmlns="http://camel.apache.org/schema/spring">
+        <restConfiguration component="spark-rest" port="9091"/>
+        <rest id="rest-105de34c-7bb2-4eca-b2a7-24801bd482c1" path="/say">
+            <get id="get-e7665b6e-b4b0-475d-b3b2-2a8c64a7bbee" uri="/hello/{name}">
+                <to uri="direct:hello"/>
+            </get>
+            <get id="get-567ead7d-2bcc-4210-abea-ee64fd315d3b" uri="/bye/{name}">
+                <to uri="direct:bye"/>
+            </get>
+        </rest>
+        <route id="_route4">
+            <from id="_from1" uri="direct:hello"/>
+            <transform id="_transform1">
+                <simple>Hello ${header.name}</simple>
+            </transform>
+        </route>
+        <route id="_route5">
+            <from id="_from2" uri="direct:bye"/>
+            <transform id="_transform2">
+                <simple>Bye ${header.name}</simple>
+            </transform>
+        </route>
+    </camelContext>
+</beans>

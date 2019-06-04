@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:camel="http://camel.apache.org/schema/spring"
+    xmlns:prop="http://camel.apache.org/schema/placeholder"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans                  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd                 http://camel.apache.org/schema/spring                  http://camel.apache.org/schema/spring/camel-spring.xsd">
+    <camelContext id="camel-context-jaxb" xmlns="http://camel.apache.org/schema/spring">
+        <restConfiguration component="spark-rest" port="9091"/>
+        <rest id="rest-21bfbfa8-a8e4-473a-a0d5-f6c19b652cbf" path="/say">
+            <get id="get-6e7eb1b4-6547-4d08-91c1-9b80aa87514a" uri="/hello">
+                <route>
+                    <transform>
+                        <constant>Hello World</constant>
+                    </transform>
+                </route>
+            </get>
+            <get id="get-ad40dc7f-d9c6-47ac-8228-5b9bcf1dec5d" uri="/bye">
+                <route>
+                    <transform>
+                        <constant>Bye World</constant>
+                    </transform>
+                </route>
+            </get>
+        </rest>
+    </camelContext>
+</beans>

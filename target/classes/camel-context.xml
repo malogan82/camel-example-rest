@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:camel="http://camel.apache.org/schema/spring"
+    xmlns:prop="http://camel.apache.org/schema/placeholder"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans                  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd                 http://camel.apache.org/schema/spring                  http://camel.apache.org/schema/spring/camel-spring.xsd">
+    <bean id="userService" class="it.marco.camel.service.UserService"/>
+    <camelContext id="camel-context-jaxb" xmlns="http://camel.apache.org/schema/spring">
+        <restConfiguration bindingMode="json" component="spark-rest" port="9091"/>
+        <rest consumes="text/plain"
+            id="rest-9f67e954-4737-43ae-8772-332beb856987" path="/say" produces="text/plain">
+            <get id="get-7192d59a-b633-4536-a567-d52a200a5145" uri="/hello">
+                <to uri="direct:hello"/>
+            </get>
+            <get id="get-8fbd6939-4abc-4f0a-83d5-21265dae7e80" uri="/bye">
+                <to uri="direct:bye"/>
+            </get>
+            <put type="it.marco.camel.model.UserPojo">
+            	<description>Updates or creates a user.</description>
+            	<param name="body" type="body" description="The user to update or create."/>
+            	<to uri="bean:userService?method=updateUser"/>
+            </put>
+        </rest>
+        <rest consumes="text/plain,application/json"
+            id="rest-63441628-dbfd-4e76-bbed-bc0f5846959d" path="/email" produces="text/html">
+            <get id="get-98d13885-2872-4948-b1ae-c34887e46cb7" uri="/to/{recipient}">
+                <to uri="direct:foo"/>
+            </get>
+            <post id="post-b34e54ba-3777-44a7-8078-e7638aff4a85" uri="/to/{recipient}">
+                <to uri="direct:foo"/>
+            </post>
+        </rest>
+        <rest id="rest-f3a804ee-b240-4c5b-bd88-4fb080a556f5" path="/say">
+            <verb id="verb-9d35d1d0-d7bc-4149-8660-cce1c10716c8"
+                method="TRACE" uri="/hello">
+                <route>
+                    <transform>
+                        <simple>${body}</simple>
+                    </transform>
+                </route>
+            </verb>
+        </rest>
+        <route id="_route1">
+            <from id="_from1" uri="direct:hello"/>
+            <transform id="_transform1">
+                <constant>Hello World</constant>
+            </transform>
+        </route>
+        <route id="_route2">
+            <from id="_from2" uri="direct:bye"/>
+            <transform id="_transform2">
+                <constant>Bye World</constant>
+            </transform>
+        </route>
+        <route id="_route6">
+            <from id="_from3" uri="direct:foo"/>
+            <transform id="_transform3">
+                <simple>Email sent to ${header.recipient}</simple>
+            </transform>
+        </route>
+    </camelContext>
+</beans>
