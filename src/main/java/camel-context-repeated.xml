@@ -5,23 +5,23 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans                  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd                 http://camel.apache.org/schema/spring                  http://camel.apache.org/schema/spring/camel-spring.xsd">
     <camelContext id="camel-context-jaxb" xmlns="http://camel.apache.org/schema/spring">
         <restConfiguration component="spark-rest" port="9091"/>
-        <rest>
-            <get uri="/say/hello">
+        <rest id="rest-a9b19719-0a7f-4fc3-9761-77ee3a323fb3">
+            <get id="get-6c33ae33-8bb8-4adb-bbe5-a97e94e86f32" uri="/say/hello">
                 <to uri="direct:hello"/>
             </get>
-            <get uri="/say/bye">
+            <get id="get-0bae06aa-477c-4493-a568-eef348fe6fc0" uri="/say/bye">
                 <to uri="direct:bye"/>
             </get>
         </rest>
-        <route>
-            <from uri="direct:hello"/>
-            <transform>
+        <route id="_route7">
+            <from id="_from1" uri="direct:hello"/>
+            <transform id="_transform1">
                 <constant>Hello World</constant>
             </transform>
         </route>
-        <route>
-            <from uri="direct:bye"/>
-            <transform>
+        <route id="_route8">
+            <from id="_from2" uri="direct:bye"/>
+            <transform id="_transform2">
                 <constant>Bye World</constant>
             </transform>
         </route>
